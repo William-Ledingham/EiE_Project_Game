@@ -31,13 +31,17 @@ namespace EiEProject
         //Rectangle2D Obstacle1B;
         Barrier Obstacle1;
         Barrier Obstacle2;
+        Barrier Obstacle3;
 
+        int width;
+        int height;
 
         public Form1()
         {
             InitializeComponent();
-            this.ClientSize = new Size(1200, 600);
-
+            this.ClientSize = new Size(1400, 750);
+            width = this.ClientSize.Width;
+            height = this.ClientSize.Height;
             masterChannel = new ANT();
             masterChannel.UcChannelType = 0;
             ThreadStart antRefMaster = new ThreadStart(masterChannel.startANT);
@@ -46,14 +50,15 @@ namespace EiEProject
 
 
             //ground = new Rectangle2D(new Point2D(600, 425), 1100, 50);
-            topLine = new Line2D(new Point2D(0, 0), new Point2D(1200, 0));
-            groundLine = new Line2D(new Point2D(0, 600), new Point2D(1200, 600));
+            topLine = new Line2D(new Point2D(0, 0), new Point2D(width, 0));
+            groundLine = new Line2D(new Point2D(0, height), new Point2D(width, height));
             /*
             Obstacle1B = new Rectangle2D(new Point2D(1150, 400-25), 20, 50);
             Obstacle1B.Velocity = new Point2D(-10, 0);
             */
-            Obstacle1 = new Barrier(1210, 20);
-            Obstacle2 = new Barrier(1210 + 610, 20);
+            Obstacle1 = new Barrier(width + 10, 30);
+            Obstacle2 = new Barrier(width + width/3 + 10, 30);
+            Obstacle3 = new Barrier(width + width*2/3 + 10, 30);
             player = new Sphere2D(new Point2D(200, 350), 25);
 
             updatePlayerLifes(playerLifes);
@@ -62,10 +67,12 @@ namespace EiEProject
 
         private void restartGame()
         {
-            Obstacle1.CenterX = 1210;
-            Obstacle2.CenterX = 1210 + 610;
+            Obstacle1.CenterX = width + 10;
+            Obstacle2.CenterX = width + width / 3 + 10;
+            Obstacle3.CenterX = width + width*2/3 + 10;
             Obstacle1.Velocity.X = -10;
             Obstacle2.Velocity.X = -10;
+            Obstacle3.Velocity.X = -10;
             score = 0;
             playerLifes = 3;
             byte l = Convert.ToByte(3);
@@ -139,10 +146,19 @@ namespace EiEProject
             {
                 Obstacle2.PlayerInsideBarrier = 0;
             }
-
+            if (Obstacle3.playerHitBarrier(player) == 1 && Obstacle3.PlayerInsideBarrier == 0)
+            {
+                Obstacle3.PlayerInsideBarrier = 1;
+                updatePlayerLifes(--playerLifes);
+            }
+            else if (Obstacle3.playerHitBarrier(player) == 0 && Obstacle3.PlayerInsideBarrier == 1)
+            {
+                Obstacle3.PlayerInsideBarrier = 0;
+            }
 
             Obstacle1.Move();
             Obstacle2.Move();
+            Obstacle3.Move();
             checkObstacle();
             this.Invalidate();
         }
@@ -151,6 +167,7 @@ namespace EiEProject
         {
             Obstacle1.Draw(e.Graphics);
             Obstacle2.Draw(e.Graphics);
+            Obstacle3.Draw(e.Graphics);
             player.Draw(e.Graphics);
         }
 
@@ -173,7 +190,7 @@ namespace EiEProject
 
         private void playerJump()
         {
-            player.Velocity = new Point2D(0, -10);
+            player.Velocity = new Point2D(0, -13);
         }
 
         private void checkObstacle()
@@ -185,10 +202,11 @@ namespace EiEProject
                 {
                     Obstacle1.Velocity.X = --Obstacle1.Velocity.X;
                     Obstacle2.Velocity.X = --Obstacle2.Velocity.X;
+                    Obstacle3.Velocity.X = --Obstacle3.Velocity.X;
                 }
                 byte s = Convert.ToByte(score);
                 masterChannel.TxBuffer[6] = s;
-                Obstacle1.CenterX = 1210;
+                Obstacle1.CenterX = width + 10;
                 Obstacle1.gapGenerator();
             }
             if(Obstacle2.CenterX <= -10)
@@ -198,11 +216,26 @@ namespace EiEProject
                 {
                     Obstacle2.Velocity.X = --Obstacle2.Velocity.X;
                     Obstacle1.Velocity.X = --Obstacle1.Velocity.X;
+                    Obstacle3.Velocity.X = --Obstacle3.Velocity.X;
                 }
                 byte s = Convert.ToByte(score);
                 masterChannel.TxBuffer[6] = s;
-                Obstacle2.CenterX = 1210;
+                Obstacle2.CenterX = width + 10;
                 Obstacle2.gapGenerator();
+            }
+            if (Obstacle3.CenterX <= -10)
+            {
+                score += 1;
+                if (Obstacle3.Velocity.X >= -15)
+                {
+                    Obstacle2.Velocity.X = --Obstacle2.Velocity.X;
+                    Obstacle1.Velocity.X = --Obstacle1.Velocity.X;
+                    Obstacle3.Velocity.X = --Obstacle3.Velocity.X;
+                }
+                byte s = Convert.ToByte(score);
+                masterChannel.TxBuffer[6] = s;
+                Obstacle3.CenterX = width + 10;
+                Obstacle3.gapGenerator();
             }
         }
 

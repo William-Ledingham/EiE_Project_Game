@@ -15,8 +15,8 @@ namespace EiEProject
         Point2D velocity = new Point2D(-10, 0);
         int playerInsideBarrier = 0;
 
-        float formX = 1200;
-        float formY = 600;
+        float formX = 1400;
+        float formY = 750;
 
         public Barrier(float X, float width)
         {
@@ -68,7 +68,9 @@ namespace EiEProject
         public void Draw(Graphics gr)
         {
             obstacleA.Draw(gr);
+            //obstacleA.Fill(gr);
             obstacleB.Draw(gr);
+            //obstacleB.Fill(gr);
 
         }
         public int playerHitBarrier(Sphere2D player)
