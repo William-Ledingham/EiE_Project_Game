@@ -1,0 +1,11 @@
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\bin\Debug\EiEProject.exe.config
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\bin\Debug\EiEProject.exe
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\bin\Debug\EiEProject.pdb
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\obj\Debug\EiEProject.csprojResolveAssemblyReference.cache
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\obj\Debug\EiEProject.Form1.resources
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\obj\Debug\EiEProject.Properties.Resources.resources
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\obj\Debug\EiEProject.csproj.GenerateResource.Cache
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\obj\Debug\EiEProject.csproj.CoreCompileInputs.cache
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\obj\Debug\EiEProject.exe
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\obj\Debug\EiEProject.pdb
+C:\Users\wille\Desktop\EiEProject\EiEProject\EiEProject\bin\Debug\ANT_NET.dll
