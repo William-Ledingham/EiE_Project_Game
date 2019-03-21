@@ -47,14 +47,16 @@ namespace EiEProject
 
         public void gapGenerator()
         {
+            Random rand = new Random();
+            float gap = rand.Next(200, 400);
+
             Random r = new Random();
-            
-            
-            float gap = 200;
             int offset = r.Next(0, (int)(formY - gap));
 
             obstacleA.Height = offset * 2;
             obstacleB.Height = (formY - (gap + offset)) * 2;
+
+
 
         }
 
@@ -68,17 +70,18 @@ namespace EiEProject
         public void Draw(Graphics gr)
         {
             obstacleA.Draw(gr);
-            //obstacleA.Fill(gr);
+            obstacleA.Fill(gr);
             obstacleB.Draw(gr);
-            //obstacleB.Fill(gr);
+            obstacleB.Fill(gr);
 
         }
         public int playerHitBarrier(Sphere2D player)
         {
-            if ((player.Center.X >= obstacleA.Center.X - obstacleA.Width / 2 && player.Center.X <= obstacleA.Center.X + obstacleA.Width / 2 &&
-                player.Center.Y <= obstacleA.Center.Y + obstacleA.Height / 2 && player.Center.Y >= obstacleA.Center.Y - obstacleA.Height/2) || (
-                player.Center.X >= obstacleB.Center.X - obstacleB.Width / 2 && player.Center.X <= obstacleB.Center.X + obstacleB.Width / 2 &&
-                player.Center.Y <= obstacleB.Center.Y + obstacleB.Height / 2 && player.Center.Y >= obstacleB.Center.Y - obstacleB.Height/2))
+            
+            if ((player.Center.X + player.Radius >= obstacleA.Center.X - obstacleA.Width / 2 && player.Center.X - player.Radius <= obstacleA.Center.X + obstacleA.Width / 2 &&
+                player.Center.Y - player.Radius <= obstacleA.Center.Y + obstacleA.Height / 2) || (
+                player.Center.X + player.Radius >= obstacleB.Center.X - obstacleB.Width / 2 && player.Center.X - player.Radius <= obstacleB.Center.X + obstacleB.Width / 2 &&
+                player.Center.Y + player.Radius >= obstacleB.Center.Y - obstacleB.Height/2))
             {
                 return 1;
             }

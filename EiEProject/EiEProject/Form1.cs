@@ -18,7 +18,7 @@ namespace EiEProject
         static ANT slaveChannel;
         static ANT masterChannel;
 
-        int playerLifes = 3;
+        int playerLives = 3;
         int score = 0;
 
         Sphere2D player;
@@ -57,11 +57,11 @@ namespace EiEProject
             Obstacle1B.Velocity = new Point2D(-10, 0);
             */
             Obstacle1 = new Barrier(width + 10, 30);
-            Obstacle2 = new Barrier(width + width/3 + 10, 30);
-            Obstacle3 = new Barrier(width + width*2/3 + 10, 30);
+            Obstacle2 = new Barrier(width + width / 3 + 10, 30);
+            Obstacle3 = new Barrier(width + width * 2 / 3 + 10, 30);
             player = new Sphere2D(new Point2D(200, 350), 25);
 
-            updatePlayerLifes(playerLifes);
+            updatePlayerLifes(playerLives);
 
         }
 
@@ -69,12 +69,12 @@ namespace EiEProject
         {
             Obstacle1.CenterX = width + 10;
             Obstacle2.CenterX = width + width / 3 + 10;
-            Obstacle3.CenterX = width + width*2/3 + 10;
+            Obstacle3.CenterX = width + width * 2 / 3 + 10;
             Obstacle1.Velocity.X = -10;
             Obstacle2.Velocity.X = -10;
             Obstacle3.Velocity.X = -10;
             score = 0;
-            playerLifes = 3;
+            playerLives = 3;
             byte l = Convert.ToByte(3);
             masterChannel.TxBuffer[7] = l;
             player.Center.Y = 550;
@@ -97,7 +97,7 @@ namespace EiEProject
             antThreadSlave.Start();
             */
 
-            
+
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -108,14 +108,14 @@ namespace EiEProject
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            
+
             if (masterChannel.Button0Pressed == 1)
             {
                 label1.Text = "button 0 pressed";
                 SendKeys.Send(" ");
                 //button0Pressed = 0;
             }
-            if(masterChannel.Button1Pressed == 1)
+            if (masterChannel.Button1Pressed == 1)
             {
                 label1.Text = "button 1 pressed";
                 SendKeys.Send("{UP}");
@@ -123,24 +123,24 @@ namespace EiEProject
             }
             else
                 label1.Text = " ";
-                
+
             player.Move();
 
             groundLine.BallBounce(player);
             topLine.BallBounce(player);
-            if(Obstacle1.playerHitBarrier(player) == 1 && Obstacle1.PlayerInsideBarrier == 0)
+            if (Obstacle1.playerHitBarrier(player) == 1 && Obstacle1.PlayerInsideBarrier == 0)
             {
                 Obstacle1.PlayerInsideBarrier = 1;
-                updatePlayerLifes(--playerLifes);
+                hit();
             }
-            else if(Obstacle1.playerHitBarrier(player) == 0 && Obstacle1.PlayerInsideBarrier == 1)
+            else if (Obstacle1.playerHitBarrier(player) == 0 && Obstacle1.PlayerInsideBarrier == 1)
             {
                 Obstacle1.PlayerInsideBarrier = 0;
             }
             if (Obstacle2.playerHitBarrier(player) == 1 && Obstacle2.PlayerInsideBarrier == 0)
             {
                 Obstacle2.PlayerInsideBarrier = 1;
-                updatePlayerLifes(--playerLifes);
+                hit();
             }
             else if (Obstacle2.playerHitBarrier(player) == 0 && Obstacle2.PlayerInsideBarrier == 1)
             {
@@ -149,7 +149,7 @@ namespace EiEProject
             if (Obstacle3.playerHitBarrier(player) == 1 && Obstacle3.PlayerInsideBarrier == 0)
             {
                 Obstacle3.PlayerInsideBarrier = 1;
-                updatePlayerLifes(--playerLifes);
+                hit();
             }
             else if (Obstacle3.playerHitBarrier(player) == 0 && Obstacle3.PlayerInsideBarrier == 1)
             {
@@ -171,31 +171,47 @@ namespace EiEProject
             player.Draw(e.Graphics);
         }
 
-        private void createObstacle()
+        private void hit()
         {
-
+            updatePlayerLifes(--playerLives);
+            if (Obstacle1.Velocity.X <= -20)
+            {
+                Obstacle1.Velocity.X = Obstacle1.Velocity.X * 3 / 4;
+                Obstacle2.Velocity.X = Obstacle2.Velocity.X * 3 / 4;
+                Obstacle3.Velocity.X = Obstacle3.Velocity.X * 3 / 4;
+            }
         }
 
-        private void updatePlayerLifes(int lifes)
+        private void updatePlayerLifes(int lives)
         {
-            if(lifes == 0)
+            if (lives == 0)
             {
                 lblGameOver.Text = "GAME OVER";
                 timer2.Enabled = false;
             }
-            byte l = Convert.ToByte(lifes);
+            else if(lives == 2)
+            {
+                player.Brush = Brushes.Orange;
+            }
+            else if(lives == 1)
+            {
+                player.Brush = Brushes.Red;
+            }
+
+            lblLives.Text = Convert.ToString(lives);
+            byte l = Convert.ToByte(lives);
             masterChannel.TxBuffer[7] = l;
 
         }
 
         private void playerJump()
         {
-            player.Velocity = new Point2D(0, -13);
+            player.Velocity = new Point2D(0, -18);
         }
 
         private void checkObstacle()
         {
-            if(Obstacle1.CenterX <= -10)
+            if (Obstacle1.CenterX <= -10)
             {
                 score++;
                 if (Obstacle1.Velocity.X >= -15)
@@ -209,7 +225,7 @@ namespace EiEProject
                 Obstacle1.CenterX = width + 10;
                 Obstacle1.gapGenerator();
             }
-            if(Obstacle2.CenterX <= -10)
+            if (Obstacle2.CenterX <= -10)
             {
                 score += 1;
                 if (Obstacle2.Velocity.X >= -15)
@@ -241,11 +257,11 @@ namespace EiEProject
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Space)
+            if (e.KeyCode == Keys.Space)
             {
                 playerJump();
             }
-            if(e.KeyCode == Keys.Space && playerLifes == 0)
+            if (e.KeyCode == Keys.Space && playerLives == 0)
             {
                 restartGame();
             }
