@@ -32,6 +32,7 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.lblGameOver = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblLives = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // timer2
@@ -57,15 +58,26 @@
             this.label1.Size = new System.Drawing.Size(0, 17);
             this.label1.TabIndex = 1;
             // 
+            // lblLives
+            // 
+            this.lblLives.AutoSize = true;
+            this.lblLives.Location = new System.Drawing.Point(80, 33);
+            this.lblLives.Name = "lblLives";
+            this.lblLives.Size = new System.Drawing.Size(46, 17);
+            this.lblLives.TabIndex = 3;
+            this.lblLives.Text = "label2";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1182, 553);
+            this.ClientSize = new System.Drawing.Size(1982, 1325);
+            this.Controls.Add(this.lblLives);
             this.Controls.Add(this.lblGameOver);
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint_1);
@@ -79,6 +91,7 @@
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Label lblGameOver;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblLives;
     }
 }
 

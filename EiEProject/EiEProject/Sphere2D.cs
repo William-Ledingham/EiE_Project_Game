@@ -18,7 +18,7 @@ namespace EiEProject
         float friction = 1f;//slows ball
         float mass = 10; // some value to give the ball momentum
         float elasticity = 1f; // a value between 0 and 1
-        float gravity = 1f;
+        float gravity = 1.7f;
 
         #region Class constructors
         /// <summary>
